@@ -23,7 +23,7 @@ public class mergeSort{
 		the smaller one is put into the sorted_ar, and the front of that
 		subarray is incremented, but the front for the other subarray 
 		remains unchanged. And dont forget to increment the index for 
-		sorted_ar; ( sorted_ar's length is the sum of the two subarray);
+		sorted_ar; 
  *  there are some boundary checking such as 
  		a <= iMid; it's in case subarray A is smaller than subarray B,
 		then when A runs out of elements to compare with B, then
