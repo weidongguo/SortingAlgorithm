@@ -1,9 +1,6 @@
 import java.lang.Math;
 
 public class quickSort{
-	static int randomInt(int hi){
-		return (int)(Math.random()*100) % hi;
-	}
 	static void swap(int ar[], int a, int b){
 		int tmp = ar[a];
 		ar[a] = ar[b];
@@ -35,21 +32,7 @@ public class quickSort{
 		}
 	}
 
-	public static void main(String argv[]){
-		int size = 20;	
-		int ar[] = new int[size];		
-		for( int i = 0 ; i < size; i++)	
-			ar[i] = randomInt(20); 
-		for( int i = 0 ; i < size; i++)
-			System.out.print(ar[i] + " ");
-		System.out.println();
-		
-		quickSort(ar, 0, size - 1);	
-		
-		for( int i = 0 ; i < size; i++)
-			System.out.print(ar[i] + " ");
-		System.out.println();
-
+	public static void quickSort(int ar[]){
+		quickSort(ar, 0, ar.length - 1);
 	}
-
 }

@@ -1,76 +1,58 @@
+import java.lang.*; /* for the function copyarray() */
+/* TOP DOWN MERGE SORT */
 public class mergeSort{
-  public static void main(String argv[]){
-    System.out.println(argv[0] +"\n"+"number of command line arguments: "+ argv.length);  
-    char ar [] = (argv[0]).toCharArray();     
 
-    for(char i : ar)
-      System.out.print(i);
-    System.out.println();             
+	static void merge(int ar[],int iBegin, int iMid, int iEnd, int sorted_ar[]){
+		int a = iBegin;
+		int b = iMid + 1 ;	
+			
+		for(int i = iBegin; i <= iEnd; i++){
+			if( (a <= iMid) && ( b > iEnd || ar[a] < ar[b] ) ){
+				sorted_ar[i] = ar[a];
+				a++;
+			}
+			else{
+				sorted_ar[i] = ar[b];
+				b++;
+			}
+		}
+	}
+/*	merge by copying each element over to a new array (sorted_ar)
+		following the procedure below;
+ *  compare the front of each subarray(let say subarray A and B)
+		the smaller one is put into the sorted_ar, and the front of that
+		subarray is incremented, but the front for the other subarray 
+		remains unchanged. And dont forget to increment the index for 
+		sorted_ar; ( sorted_ar's length is the sum of the two subarray);
+ *  there are some boundary checking such as 
+ 		a <= iMid; it's in case subarray A is smaller than subarray B,
+		then when A runs out of elements to compare with B, then
+		just copy the rest of B to the sorted_ar 		
+		
+		b > iEnd; it's in case subarray B is smaller than subarray A,
+		then when B runs out of elements to compare with A, then
+		just copy the rest of A to the sorted_ar 
+ *  Note: b > iEnd has to be checked before ar[a] < ar[b] because
+ *  ar[b] may trigger out of bound error
+ */
+				
+	static void split_and_merge(int ar[], int iBegin, int iEnd, int sorted_ar[])
+	{ /* both iBegin and iEnd are inclusive */
 
-    sort(ar);
-    
-    print_ar(ar);
-  }
+		if(iBegin >= iEnd)/* when there is only 1 element or fewer */
+						return;					
+		int iMid = (iBegin+iEnd)/2;	
+		split_and_merge(ar, iBegin, iMid, sorted_ar);	
+		split_and_merge(ar, iMid+1, iEnd, sorted_ar);
+		merge(ar, iBegin, iMid, iEnd, sorted_ar);
+		System.arraycopy(sorted_ar, iBegin, ar, iBegin, iEnd - iBegin+1);
+		/* copy the sorted subarray back to the corresponding part of the
+		   original array ar */	
+	}
+	
 
-  static void sort(char [] ar){
-    System.out.println("Sorting...");
-    char sorted_ar[] = new char[ar.length];
-
-    mergeSplit(ar, 0, ar.length, sorted_ar);
-
-    ar = sorted_ar;
-    
-  }
-
-  /* iBegin inclusive, iEnd exclusive */
-  static void mergeSplit(char [] ar , int iBegin, int iEnd, char [] sorted_ar){
-    if(iEnd - iBegin <= 1)
-      return; 
-    //print_ar(ar,iBegin, iEnd); 
-    int iMid = (iBegin + iEnd) / 2;
-    mergeSplit(ar, iBegin, iMid, sorted_ar);
-    mergeSplit(ar, iMid, iEnd, sorted_ar);
-    merge(ar, iBegin, iMid, iEnd, sorted_ar);
-    System.arraycopy(sorted_ar, iBegin, ar, iBegin, iEnd - iBegin);//copy back the sorted array to the original
-    //print_ar(ar,iBegin, iEnd);  
-  }
-  
-  static void merge(char [] ar, int iBegin, int iMid, int iEnd, char [] sorted_ar){
-    for(int i = 0, j = 0, k = 0; k < iEnd ;k++)  {
-      if(iBegin+i >= iMid) {
-        System.arraycopy(ar, iMid+j, sorted_ar, iBegin+k, iEnd - (iMid + j) );      
-        return;
-      }
-      if(iMid+j >= iEnd) {
-        System.arraycopy(ar, iBegin+i, sorted_ar, iBegin+k, iMid - (iBegin + i) );
-        return;
-      }
-
-      if(ar[iBegin+i] < ar[iMid+j]){
-        sorted_ar[iBegin+k] = ar[iBegin+i];
-        i++;
-      }
-      else {
-        sorted_ar[iBegin+k] = ar[iMid+j];
-        j++;
-      }
-    }
-
-  }
-
-
-  static void print_ar(char [] ar){
-    System.out.println("\n\n---sorted below---");       
-    for(char i : ar)
-      System.out.print(i);
-    System.out.println("\n---sorted above---\n");
-  }
-  static void print_ar(char [] ar, int iBegin, int iEnd){
-    System.out.println("\n\n---sorted below---");       
-    for(int i = iBegin; i < iEnd; i++)
-      System.out.print(ar[i]);
-    System.out.println("\n---sorted above---\n");
-  }
-
+	static void mergeSort(int ar[]){ /* driver */
+		int sorted_ar[] = new int[ar.length];
+		split_and_merge(ar, 0, ar.length - 1, sorted_ar);		
+	}
 }
-
